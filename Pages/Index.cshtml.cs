@@ -11,14 +11,18 @@ namespace CoffeeManagement.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<Product> productList = new List<Product>();
+        [BindProperty]
+        public List<Product> products { get { return productList; } }
 
-        internal class Product
+        private List<Product> productList = new List<Product>();
+        public class Product
         {
-            private String ProductName;
-            private String ProductDescription;
-            private String ProductIngredients;
-            private String ImageName;
+            public String ProductName, 
+                ProductDescription,
+                ProductIngredients, 
+                ImageName;
+
+            public Boolean IsImageValid;
 
             public Product(String productName, String productDescription, String productIngredients, String imageName) 
             {
@@ -26,6 +30,16 @@ namespace CoffeeManagement.Pages
                 ProductDescription = productDescription;
                 ProductIngredients = productIngredients;
                 ImageName = imageName;
+
+                IsImageValid = IsValidImage(imageName);
+            }
+
+            private Boolean IsValidImage(string imageName)
+            {
+                var relativePath = String.Format("\\wwwroot\\img\\{0}.png", imageName);
+                var trailEnd = "\\bin\\Debug\\netcoreapp3.1\\";
+                var absolutePath = AppDomain.CurrentDomain.BaseDirectory.Replace(trailEnd, "");
+                return System.IO.File.Exists(String.Format("{0}{1}" ,absolutePath, relativePath));
             }
         }
 
@@ -41,7 +55,7 @@ namespace CoffeeManagement.Pages
             var products = Utilities.Products.GetProductsDataTable();
             foreach (DataRow row in products.Rows) 
             {
-                var product = new Product(row["ProductName"].ToString(), row["ProductDescription "].ToString(), row["ProductIngredients "].ToString(), row["ImageName"].ToString());
+                var product = new Product(row["ProductName"].ToString(), row["ProductDescription"].ToString(), row["ProductIngredients"].ToString(), row["ImageName"].ToString());
                 productList.Add(product);
             }
         }

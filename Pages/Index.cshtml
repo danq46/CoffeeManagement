@@ -3,7 +3,32 @@
 @{
     ViewData["Title"] = "Home page";
 }
+    
+    <div class="border p-4 rounded">
+    <h3>Products</h3>
 
-    <div class="text-center">
+    @for (int i = 0; i < @Model.products.Count; i++)
+    {
+        var isImageValid = (@Model.products[i]).IsImageValid; 
 
-    </div>
+        String productName = (@Model.products[i]).ProductName,
+            productDescription = (@Model.products[i]).ProductDescription,
+            productIngredients = (@Model.products[i]).ProductIngredients,
+            imageName = isImageValid ? (@Model.products[i]).ImageName += ".png" : "placeHolderCoffee";
+
+        if(String.IsNullOrEmpty(productName) && String.IsNullOrEmpty(productDescription) && String.IsNullOrEmpty(productIngredients))
+            continue;
+        
+        var isAlternate = (i % 2 != 0);
+
+        <div class="block row @(isAlternate ? "bg-light" : "") mb-5 border p-2 rounded">
+            <div class="span4">
+                <img class="float-left mr-5" style="width:210px; height:230px" src="img/@imageName" alt="Card image cap">
+                <div class="content-heading mb-3"><h5>@productName &nbsp </h5></div>
+                <p> @productDescription </p>
+                <p> @productIngredients </p>
+                <a href="#" class="btn btn-primary bg-success text-white ">Order</a>
+            </div>
+        </div>
+    }
+</div>
