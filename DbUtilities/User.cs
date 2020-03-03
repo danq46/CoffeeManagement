@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using CoffeeManagement.DbUtilities;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CoffeeManagement.DbUtilities
 {
@@ -12,22 +14,48 @@ namespace CoffeeManagement.DbUtilities
     {
         public Int32 UserID;
         public String Username;
-        public User(String username, String password)
+        public void LoginUser(String username, String password, out Boolean isAuth)
         {
-            using (var userDataReader = GetUserbByUsernameAndPassword(username, password)) 
+            var dbUserPassword = GetPasswordbByUsername(username);
+            if (!String.IsNullOrEmpty(dbUserPassword)) 
             {
-                UserID = Convert.ToInt32(userDataReader.GetValue("UserID").ToString());
-                Username = userDataReader.GetValue("UserName").ToString();
+                
+                using (var userDataReader = GetUserbByUsernameAndPassword(username, password)) 
+                {
+                    UserID = Convert.ToInt32(userDataReader.GetValue("UserID").ToString());
+                    Username = userDataReader.GetValue("UserName").ToString();
+                }
+            
             }
+            isAuth = true;
+        }
+        private String GetPasswordbByUsername(String username)
+        {
+            var userReader = Procedure("proc_GetPasswordbByUsername")
+            .Params(
+               new SqlParameter("@Username", username)
+            ).Execute<DataTable>();
+
+            var rows = userReader.Select();
+             
+            return rows[0]["Password"].ToString();
+        }
+        public void SignUpUser(String username, String password, out Boolean signedUp) 
+        {
+            var passwordBytes = Encoding.ASCII.GetBytes(password);
+            var sha = new SHA1CryptoServiceProvider();
+            var hashedBytes = sha.ComputeHash(passwordBytes);
+
+            SignUp(username, hashedBytes);
         }
 
-        public SqlDataReader GetUserbByUsernameAndPassword(String username, String password) 
+        private Boolean SignUp(String username, byte[] password)
         {
-            return Procedure("proc_GetUserByUsernameAndPassword")
+            return Procedure("proc_SignUpUser")
             .Params(
-               new SqlParameter("@Username", SqlDbType.NVarChar),
-               new SqlParameter("@Password", SqlDbType.NVarChar)
-            ).Execute<SqlDataReader>();
+               new SqlParameter("@Username", username),
+               new SqlParameter("@Password", password)
+            ).Execute<Boolean>();
         }
     }
 }

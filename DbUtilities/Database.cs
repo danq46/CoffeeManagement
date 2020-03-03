@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoffeeManagement.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,8 +14,8 @@ namespace CoffeeManagement.DbUtilities
         {
             internal String ProcedureName { get; set; }
             private SqlParameter[] ProcedureParams { get; set; }
-            
-            private static readonly String ConnectionString = "Initial Catalog = CoffeManagement; Data Source = DESKTOP-6SE50ED\\SQLSERVER; User ID = sa; Password = 12345";
+
+            private static readonly String ConnectionString = Common.connectionString;
 
             public procedureCall Params(params SqlParameter[] sqlParameters)
             {

@@ -28,8 +28,7 @@ namespace CoffeeManagement.Pages
             }
             else
             {
-                var user = new Utilities.User(Username, Password);
-                if (user.IsAuth) 
+                if (Utilities.User.Login(Username, Password)) 
                 {
                     GoToDashBoardPage();
                 }
@@ -43,7 +42,10 @@ namespace CoffeeManagement.Pages
 
         public void OnPostSignUp() 
         {
-        
+            if (Utilities.User.SignUp(Username, Password))
+            { 
+                
+            }
         }
     }
 }

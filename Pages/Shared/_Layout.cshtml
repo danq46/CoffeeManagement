@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    @{
-        var cacheHelper = new Utilities.CacheHelper();
-        var username = cacheHelper.GetKeyValue("Username");
-    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -20,8 +16,6 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>   
-                @if (!String.IsNullOrEmpty(username))
-                {
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
@@ -38,7 +32,6 @@
                             </li>
                         </ul>
                     </div>
-                    }
                 </div>
         </nav>
     </header>
