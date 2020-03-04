@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeeManagement", "CoffeeManagement.csproj", "{71246E55-3CB5-442A-8332-82B1FDE5ED2F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageApi", "..\ImageApi\ImageApi.csproj", "{F81B33BD-E64D-44E0-B5C5-F736552232AD}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CoffeeManagementDatabase", "..\CoffeeManagementDatabase\CoffeeManagementDatabase.sqlproj", "{22584CCE-0AF8-4E02-BD72-22C779D6BD7D}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{71246E55-3CB5-442A-8332-82B1FDE5ED2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71246E55-3CB5-442A-8332-82B1FDE5ED2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71246E55-3CB5-442A-8332-82B1FDE5ED2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F81B33BD-E64D-44E0-B5C5-F736552232AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F81B33BD-E64D-44E0-B5C5-F736552232AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F81B33BD-E64D-44E0-B5C5-F736552232AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F81B33BD-E64D-44E0-B5C5-F736552232AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22584CCE-0AF8-4E02-BD72-22C779D6BD7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22584CCE-0AF8-4E02-BD72-22C779D6BD7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22584CCE-0AF8-4E02-BD72-22C779D6BD7D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
