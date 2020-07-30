@@ -1,4 +1,5 @@
 ﻿using CoffeeManagement.Utilities;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace CoffeeManagement.DbUtilities
 {
-    public class Database
+    public class Database : IDisposable
     {
         protected class procedureCall
         {
             internal String ProcedureName { get; set; }
             private SqlParameter[] ProcedureParams { get; set; }
 
-            private static readonly String ConnectionString = Common.connectionString;
+            private static readonly string ConnectionString = Common.ConnectionString; 
 
             public procedureCall Params(params SqlParameter[] sqlParameters)
             {
@@ -100,6 +101,11 @@ namespace CoffeeManagement.DbUtilities
             {
                 ProcedureName = procedureName
             };
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
         }
     }
 }

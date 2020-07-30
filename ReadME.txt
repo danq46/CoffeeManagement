@@ -1,19 +1,27 @@
 Coffee Managemnet Applicaion
 
-Using Api to retrieve images- Strict-Transport-Security , MVC Controllers, FileStreams
+Admin {
+	Emplyoee{
+		Customer { 
+			User Login
+			Sign Up
 
-Consest of a Landing page, Login page
+			Product
+			Order
+		}
+		User Managemnet (Customer)
+		Product Managemnet
+		Order Managemnet	
+	}
+	User Managemnet (Emplyoee)
+}
 
-Being able to manage - 
+User[ ID , Username , Email & Password ]
 
-USERS 
-	Admin - full control over the system, beging able to view ALL reports,
-	Employees - beging able to view SOME reports,
-	Customers - being able to register, place an order, view coffees,  
-	
-DRINKS
-Product- 
-Stock- 
-Ingredientns - 
+Emplyoee[ID , UserID , FirstName , LastName , Contact NO]
 
-Reports- 
+Customer[ID , UserID , FirstName , LastName , Contact NO]
+
+Product [ID , Name ,Description , Ingredietns, Price , ImgSource]
+
+Order[ID , USerID, EmplyoeeID , CustomerID , Total]

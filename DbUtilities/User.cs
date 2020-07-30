@@ -12,23 +12,38 @@ namespace CoffeeManagement.DbUtilities
 {
     public class User : Database
     {
+        public User()
+        {
+            //
+        }
+
         public Int32 UserID;
         public String Username;
         public void LoginUser(String username, String password, out Boolean isAuth)
         {
             var dbUserPassword = GetPasswordbByUsername(username);
-            if (!String.IsNullOrEmpty(dbUserPassword)) 
+            if (!String.IsNullOrEmpty(dbUserPassword))
             {
-                
-                using (var userDataReader = GetUserbByUsernameAndPassword(username, password)) 
+                if (VerifiedPassword(dbUserPassword, password))
                 {
-                    UserID = Convert.ToInt32(userDataReader.GetValue("UserID").ToString());
-                    Username = userDataReader.GetValue("UserName").ToString();
+                    using (var userDataReader = GetUserbByUsername(username))
+                    {
+                        while (userDataReader.Read())
+                        {
+                            Username = userDataReader.GetValue("UserName").ToString();
+                            UserID = Convert.ToInt32(userDataReader.GetValue("UserID").ToString());
+                        }
+                    }
                 }
-            
             }
             isAuth = true;
         }
+
+        private SqlDataReader GetUserbByUsername(string username)
+        {
+            return Procedure("proc_GetUserDataByUsername").Execute<SqlDataReader>();
+        }
+
         private String GetPasswordbByUsername(String username)
         {
             var userReader = Procedure("proc_GetPasswordbByUsername")
@@ -37,16 +52,18 @@ namespace CoffeeManagement.DbUtilities
             ).Execute<DataTable>();
 
             var rows = userReader.Select();
-             
-            return rows[0]["Password"].ToString();
+
+            return rows.Length > 0 ?
+                rows[0]["Password"].ToString()
+                : String.Empty;
         }
-        public void SignUpUser(String username, String password, out Boolean signedUp) 
+        public void SignUpUser(String username, String password, out Boolean signedUp)
         {
             var passwordBytes = Encoding.ASCII.GetBytes(password);
             var sha = new SHA1CryptoServiceProvider();
             var hashedBytes = sha.ComputeHash(passwordBytes);
 
-            SignUp(username, hashedBytes);
+            signedUp = SignUp(username, hashedBytes);
         }
 
         private Boolean SignUp(String username, byte[] password)
@@ -56,6 +73,13 @@ namespace CoffeeManagement.DbUtilities
                new SqlParameter("@Username", username),
                new SqlParameter("@Password", password)
             ).Execute<Boolean>();
+        }
+        private Boolean VerifiedPassword(String dbPassword, String enteredPassword)
+        {
+            // yet to debug 
+            var sha = new SHA1CryptoServiceProvider();
+            var saltBytes = Encoding.ASCII.GetBytes(enteredPassword);
+            return sha.ComputeHash(saltBytes).Equals(dbPassword);
         }
     }
 }

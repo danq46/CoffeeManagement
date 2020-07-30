@@ -43,8 +43,8 @@ namespace CoffeeManagement.Pages
         public void OnPostSignUp() 
         {
             if (Utilities.User.SignUp(Username, Password))
-            { 
-                
+            {
+                GoToDashBoardPage();
             }
         }
     }

@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace CoffeeManagement.Utilities
 {
-    public class User
+    public class User : IdentityUser<Int32>
     {
         public String UserName
         {
@@ -33,8 +34,11 @@ namespace CoffeeManagement.Utilities
         }
         public static Boolean Login(String username, String password) 
         {
-            var isAuth = username.Equals(Common.adminUser.UserName);
-            DbUtilities.User.LoginUser(username, password, out isAuth);
+            var isAuth = username.Equals(Common.AdminUser.UserName);
+            using (var user = new DbUtilities.User())
+            {
+                user.LoginUser(username, password, out isAuth);
+            }
             if (isAuth)
             {
                 uUsername = username;
@@ -47,7 +51,10 @@ namespace CoffeeManagement.Utilities
         public static Boolean SignUp(String username, String password) 
         {
             var signedUp = false;
-            DbUtilities.User.SignUpUser(username, password, out signedUp);
+            using (var userDb = new DbUtilities.User())
+            { 
+                userDb.SignUpUser(username, password, out signedUp);
+            }
             return signedUp;
         }
     }
