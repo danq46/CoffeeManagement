@@ -30,7 +30,11 @@ namespace CoffeeManagement
                 config.UseSqlServer(Configuration.GetConnectionString("ConnectionString"));
             });
 
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorPagesOptions(config => 
+            {
+                config.Conventions.AuthorizePage("/Pages/Privacy");
+            });
+
             services.AddMemoryCache();
             services.AddSession(options =>
                 options.IdleTimeout = TimeSpan.FromMinutes(30));

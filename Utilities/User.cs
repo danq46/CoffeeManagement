@@ -10,52 +10,18 @@ namespace CoffeeManagement.Utilities
 {
     public class User : IdentityUser<Int32>
     {
-        public String UserName
-        {
-            get { return uUsername; }
-            set { uUsername = value; }
-        }
-        public Boolean IsAuth 
-        {
-            get { return uIsAuth; }
-            set { uIsAuth = value; }
-        }
+        #region IdentityManagment
+        private UserManager<User> _userManager { get; }
+        private SignInManager<User> _signInManager { get; }
 
-        private static String uUsername;
-        private static Boolean uIsAuth;
-        public User(String username, String password) 
-        {
-        
-        }
-        private static void SetUserCache()
-        {
-            var cacheHelper = new CacheHelper();
-            cacheHelper.AddKey("username", uUsername);
-        }
-        public static Boolean Login(String username, String password) 
-        {
-            var isAuth = username.Equals(Common.AdminUser.UserName);
-            using (var user = new DbUtilities.User())
-            {
-                user.LoginUser(username, password, out isAuth);
-            }
-            if (isAuth)
-            {
-                uUsername = username;
-                uIsAuth = true;
-                SetUserCache();
-            }
-            return isAuth;
-        }
+        #endregion
 
-        public static Boolean SignUp(String username, String password) 
+        public User()
         {
-            var signedUp = false;
-            using (var userDb = new DbUtilities.User())
-            { 
-                userDb.SignUpUser(username, password, out signedUp);
-            }
-            return signedUp;
+            // no
+        }
+        public void SignIn() 
+        {
         }
     }
 }

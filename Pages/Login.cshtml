@@ -1,70 +1,82 @@
 ﻿@page
 @model CoffeeManagement.Pages.LoginModel
 @{
+    @using Utilities
+
     ViewData["Title"] = "Sign In / Sign Up ";
-}
 
-        <h1 class="text-center"><u>Coffee</u></h1>
-        <div class="row ">
-                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                    <div class="card card-signin my-5">
-                        <div class="card-body">
-                            <form method="post" class="form-group card-body">
-                                <a class="signUpInLink float-right btn btn-outline-primary">Sign Up</a>
-                                <div class="card-title mb-4 mt-1">
-                                    <h4 class="heading">Sign In</h4>
-                                    <p class="taskDescription">Sign in to a already created account</p>
-                                </div>
-                                <hr>
-                                <p class="text-success text-center">@Model.FormMessage</p>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                                        </div>
-                                        <input asp-for="@Model.Username" class="form-control" placeholder="Email or Username" type="text">
-                                    </div> <!-- input-group.// -->
-                                </div> <!-- form-group// -->
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                                        </div>
-                                        <input asp-for="@Model.Password" class="form-control" placeholder="******" type="password">
-                                    </div> <!-- input-group.// -->
-                                </div> <!-- form-group// -->
-                                <div class="form-group">
-                                    <button type="submit" asp-page-handler="SignIn" class="signInBtn btn btn-primary btn-block">Sign In</button>
-                                    <button type="submit" asp-page-handler="SignUp" hidden="true" class="signUpBtn btn btn-primary btn-block">Sign Up</button>
-                                </div> <!-- form-group// -->
-                                <a href="#" class="forgot-password btn">Forgot password?</a>
-                            </form>
-                        </div>
+    var signInString = "Sign In";
+    var signUpString = "Sign Up";
+
+    var isSignIn = Request.GetQueryStringValue("SignIn", true);
+
+    var buttonString = isSignIn ? signInString : signUpString;
+    var changeTaskString = isSignIn ? signUpString : signInString;
+    var urlLink = isSignIn ? "Login?SignIn=false" : "Login?SignIn=true";
+    var taskDescription = isSignIn ? "Sign into a already created account" : "Create a new account";
+}
+<h1 class="text-center"><u>Coffee</u></h1>
+<div class="row ">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+            <div class="card-body">
+                <form method="post" class="form-group card-body">
+                    <div class="card-title mb-4 mt-1">
+                        <a href="@urlLink" class="float-right btn btn-outline-primary">@changeTaskString</a>
+                        <h4 class="heading">@buttonString</h4>
+                        <p>@taskDescription</p>
                     </div>
-                </div>
+                    <hr>
+                    @{
+                        var errors = @Model.FormMessage.Errors;
+                        if (errors.Count > 0)
+                        {
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong>
+                                <ol>
+                                    @foreach (var error in errors)
+                                    {
+                                        <li>@error</li>
+                                    }
+                                </ol>
+                            </div>
+                        }
+                    }
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                            </div>
+                            <input asp-for="@Model.Username" class="form-control" placeholder="Email or Username" type="text" />
+                        </div> <!-- input-group.// -->
+                    </div> <!-- form-group// -->
+                    @{
+                        if (!isSignIn)
+                        {
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                    </div>
+                                    <input asp-for="@Model.Email" class="form-control" placeholder="Email" type="text" />
+                                </div> <!-- input-group.// -->
+                            </div> <!-- form-group// -->
+                        }
+                    }
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                            </div>
+                            <input asp-for="@Model.Password" class="form-control" placeholder="******" type="password" />
+                        </div> <!-- input-group.// -->
+                    </div> <!-- form-group// -->
+                    <div class="form-group">
+                        <button type="submit" asp-page-handler="SignIn" class="signInBtn btn btn-primary btn-block">@buttonString</button>
+                    </div> <!-- form-group// -->
+                    <a href="#" class="forgot-password btn">Forgot password?</a>
+                </form>
             </div>
-
-@section Scripts{
-    <script type="text/javascript">
-        $('.signUpInLink').on('click', function (event) {
-                var isSignUp = event.target.innerText === 'Sign Up';
-                var signString = isSignUp
-                    ? 'Sign Up'
-                    : 'Sign In';
-                var signUpLinkString = isSignUp
-                    ? 'Sign In'
-                    : 'Sign Up';
-                var taskDescription = isSignUp
-                    ? 'Create a new account'
-                    : 'Sign in to a already created account';
-
-                $('.taskDescription').text(taskDescription);
-                $('.signUpInLink').text(signUpLinkString);
-                $('.heading').text(signString);
-                $('.submitBtn').text(signString);
-                $(".forgot-password").attr("hidden", isSignUp);
-                $('.signInBtn').attr("hidden", isSignUp);
-                $('.signUpBtn').attr("hidden", !isSignUp);
-        });
-    </script>
-}
+        </div>
+    </div>
+</div>
